@@ -1,6 +1,6 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
-import 'firebase/auth';
+import 'firebase/compat/auth';
 // Your web app's Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyAPkoENaDybBt2C8n0iApu-gnMPCjLTTjg",
@@ -11,7 +11,7 @@ const firebaseConfig = {
     appId: "1:786587584741:web:345f3bdd98cd38b81fac0c"
 };
 
-// Initialize Firebase
+// Initialize Firebase 
 firebase.initializeApp(firebaseConfig);
 
 // Export Firestore instance

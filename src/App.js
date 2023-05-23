@@ -2,7 +2,11 @@ import React from 'react';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, firestore } from './firebase';
+import { Route, Routes } from 'react-router-dom';
 import Login from './Login';
+import Home from './Home';
+import NotFound from './NotFound';
+import './App.css';
 
 function App() {
   const [user] = useAuthState(auth);
@@ -14,25 +18,23 @@ function App() {
     await betsRef.doc(betId).update({ confirmed: true });
   };
 
-  if (!user) {
-    return <Login />;
-  }
-
   return (
     <div>
       <h1>Golf Tracker</h1>
-      <p>Welcome, {user.email}!</p>
-      <ul>
-        {bets &&
-          bets.map((bet) => (
-            <li key={bet.id}>
-              {bet.player}: ${bet.amount} ({bet.confirmed ? 'Confirmed' : 'Pending'})
-              {!bet.confirmed && (
-                <button onClick={() => handleConfirmBet(bet.id)}>Confirm</button>
-              )}
-            </li>
-          ))}
-      </ul>
+      {user ? (
+        <>
+          <p>Welcome, {user.email}!</p>
+          <Routes>
+            <Route
+              path="/"
+              element={<Home bets={bets} handleConfirmBet={handleConfirmBet} />}
+            />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </>
+      ) : (
+        <Login />
+      )}
     </div>
   );
 }
