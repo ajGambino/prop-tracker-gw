@@ -1,18 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { auth } from './firebase';
-import 'firebase/compat/firestore';
-import 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 
-function Login() {
+const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        // Check if a user is already signed in
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is already signed in, redirect to home
+                navigate('/home');
+            }
+        });
+
+        return () => unsubscribe();
+    }, [navigate]);
 
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
             await auth.signInWithEmailAndPassword(email, password);
             // Authentication successful, redirect to the main app
-            // You can use React Router for navigation
+            navigate('/home');
         } catch (error) {
             console.error('Error logging in:', error);
             // Handle login error
@@ -39,6 +51,6 @@ function Login() {
             </form>
         </div>
     );
-}
+};
 
 export default Login;
