@@ -1,17 +1,13 @@
 import React from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, firestore } from './firebase';
+import { Link } from 'react-router-dom';
 
-const Home = ({ bets, handleConfirmBet }) => {
-    const [user] = useAuthState(auth);
-    // Check if the user object exists and has the email property
-    const userEmail = user?.email || '';
-
+const Home = () => {
     return (
         <div>
             <h2>Home</h2>
-            <p>Welcome, {userEmail}!</p>
-            {/* Rest of the component code */}
+            <p>Welcome to the Golf Betting App!</p>
+            <p>Click the button below to view the results.</p>
+            <Link to="/results">View Results</Link>
         </div>
     );
 };
